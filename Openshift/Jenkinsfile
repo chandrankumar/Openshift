@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    tools {
+        maven 'mvn3.6.0'
+        jdk 'jdk1.8'
+    }
+    environment {
+         PATH = "C:\\WINDOWS\\SYSTEM32"
+    }
+     stages {
+        stage('Git Source') {
+            steps {
+                    echo "workspace=${env.WORKSPACE}"
+                    echo "path=${env.PATH}"
+                    echo 'pull the source code from git'
+                    git 'https://github.com/chandrankumar/Openshift.git'
+            }
+        }
+        stage('Maven Build'){
+            steps {
+                dir("${env.WORKSPACE}/Openshift"){
+                    bat 'mvn clean install'
+                }
+                 
+                }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'deployment'
+            }
+        }
+     }
+}
